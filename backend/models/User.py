@@ -1,31 +1,30 @@
 from pydantic import BaseModel, EmailStr
+from config import get_settings
 
-from main import get_settings
-
-
-class UserBase(BaseModel):
-    username: str
-    email: EmailStr
-    full_name: str | None = None
+from sqlmodel import Field, SQLModel
 
 
-class UserIn(UserBase):
+class UserInDB(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    username: str = Field(index=True)
+    email: str
+    full_name: str
     password: str
 
-class UserOut(UserBase):
-    pass
 
-class UserInDB(UserBase):
-    hashed_password: str
+class UserOut(BaseModel):
+    id: int
+    username: str
+    email: str
+    full_name: str
+
+class UserIn(BaseModel):
+    username: str
+    email: str
+    full_name: str
+    password: str
 
 
 def password_hasher(raw_password: str):
     settings = get_settings()
     return settings.password_hash_secret_word + raw_password
-
-
-def fake_save_user(user_in: UserIn):
-    hashed_password = password_hasher(user_in.password)
-    user_in_db = UserInDB(**user_in.dict(), hashed_password=hashed_password)
-    print("User saved! ..not really")
-    return user_in_db
