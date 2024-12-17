@@ -4,7 +4,7 @@ from config import get_settings
 from sqlmodel import Field, SQLModel
 
 
-class UserInDB(SQLModel, table=True):
+class UserDB(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     username: str = Field(index=True)
     email: str
@@ -12,13 +12,17 @@ class UserInDB(SQLModel, table=True):
     password: str
 
 
-class UserOut(BaseModel):
+class UserDetail(BaseModel):
     id: int
     username: str
     email: str
     full_name: str
 
-class UserIn(BaseModel):
+class UserInList(BaseModel):
+    id: int
+    username: str
+
+class UserSignIn(BaseModel):
     username: str
     email: str
     full_name: str
