@@ -5,3 +5,6 @@ pydantic_settings
 sqlmodel~=0.0.22
 SQLAlchemy~=2.0.36
 pydantic-settings~=2.7.0
+pyjwt
+passlib[bcrypt]
+python-multipart
